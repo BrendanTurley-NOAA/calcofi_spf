@@ -8,6 +8,7 @@ setwd("~/Documents/R/Github/calcofi_spf/data")
 ### connecting to ERDDAP to retrieve data
 calcofi_eggs <- info('erdCalCOFIeggcnt')
 
+###subset for anchovy/sardine, station and line, and pairovet only
 anch_eggs_2 <- tabledap(calcofi_eggs,'calcofi_species_code=31','line>=76.7','line<=93.3','station<=120','net_type="PV"')
 sard_eggs <- tabledap(calcofi_eggs,'calcofi_species_code=19','line>=76.7','line<=93.3','station<=120','net_type="PV"')
 
