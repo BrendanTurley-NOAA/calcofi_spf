@@ -1,4 +1,4 @@
-setwd('~/Desktop/professional/projects/side_projects/spf_eggs/update_2020/data')
+setwd("~/Documents/R/Github/calcofi_spf/data")
 
 sard_head <- read.csv('sardine_assessment_data.csv',nrows=1)
 sard <- read.csv('sardine_assessment_data.csv',header=F,skip=2)
