@@ -65,3 +65,9 @@ plot(log(stock_assess$sard_best,base=10),
 
 
 
+### interpolating maps for 10 years with highest biomass versus 10 years with lowest
+anch_order <- order(stock_assess$anch_2017,decreasing = T)
+sard_order <- order(stock_assess$sard_best,decreasing = T)
+
+stock_assess$year[anch_order]
+stock_assess$year[sard_order]
