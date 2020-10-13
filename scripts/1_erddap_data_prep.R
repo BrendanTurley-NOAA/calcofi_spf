@@ -44,6 +44,11 @@ anch_eggs <- anch_eggs[ind,]
 ind <- is.element(sard_eggs$statline,calcofi_stations$statline)
 sard_eggs <- sard_eggs[ind,]
 
+### saving data for interpolation later
+setwd("~/Documents/R/Github/calcofi_spf/data")
+write.csv(anch_eggs,'anch_eggs.csv',row.names=F)
+write.csv(sard_eggs,'sard_eggs.csv',row.names=F)
+
 
 ### -------------- subset for Santa Barbara Channel (SBC) --------------
 latbox_s <- 34.022787

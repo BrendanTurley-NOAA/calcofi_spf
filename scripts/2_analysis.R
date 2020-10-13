@@ -21,53 +21,59 @@ names(stock_assess) <- c('year',
 
 ### 1 - stock versus core CalCOFI region
 # anchovy
-cor.test(stock_assess$anch_2017,eggs_all_yr$anch_eggs_10m2,method='spearman')
-plot(stock_assess$anch_2017,eggs_all_yr$anch_eggs_10m2,log='xy')
+anch_cor_w <- cor.test(stock_assess$anch_2017,eggs_all_yr$anch_eggs_10m2,method='spearman')
 # sardine
-cor.test(stock_assess$sard_best,eggs_all_yr$sard_eggs_10m2,method='spearman')
-plot(stock_assess$sard_best,eggs_all_yr$sard_eggs_10m2+1,log='xy')
+sard_cor_w <- cor.test(stock_assess$sard_best,eggs_all_yr$sard_eggs_10m2,method='spearman')
 
 ### 2- stock versus Santa Barbara Channel (SBC)
 # anchovy
-cor.test(stock_assess$anch_2017,eggs_sbc_yr$anch_eggs_10m2,method='spearman')
-plot(stock_assess$anch_2017,eggs_sbc_yr$anch_eggs_10m2+1,log='xy')
+anch_cor_sbc <- cor.test(stock_assess$anch_2017,eggs_sbc_yr$anch_eggs_10m2,method='spearman')
 # sardine
-cor.test(stock_assess$sard_best,eggs_sbc_yr$sard_eggs_10m2,method='spearman')
-plot(stock_assess$sard_best,eggs_sbc_yr$sard_eggs_10m2+1,log='xy')
+sard_cor_sbc <- cor.test(stock_assess$sard_best,eggs_sbc_yr$sard_eggs_10m2,method='spearman')
 
-
+### export results to table
+cor_table <- matrix(NA,4,2)
+cor_table[1,] <- cbind(anch_cor_w$estimate,anch_cor_w$p.value)
+cor_table[2,] <- cbind(sard_cor_w$estimate,sard_cor_w$p.value)
+cor_table[3,] <- cbind(anch_cor_sbc$estimate,anch_cor_sbc$p.value)
+cor_table[4,] <- cbind(sard_cor_sbc$estimate,sard_cor_sbc$p.value)
+colnames(cor_table) <- c('rho','p-value')
+row.names(cor_table) <- c('anchovy whole','sardine whole','anchovy sbc','sardine sbc')
+setwd("~/Documents/R/Github/calcofi_spf/results")
+write.csv(cor_table,'correlation_results.csv')
 
 ### combined plot
-par(mfrow=c(2,2))
-plot(log(stock_assess$anch_2017,base=10),
-     log(eggs_all_yr$anch_eggs_10m2+1,base=10),
-     xlab='Log(anchovy biomass)',
-     ylab='Log(anchovy eggs 10m2)',
-     pch=21, las=1, col='white',bg='gray40')
 
-plot(log(stock_assess$anch_2017,base=10),
-     log(eggs_sbc_yr$anch_eggs_10m2+1,base=10),
-     xlab='Log(anchovy biomass)',
-     ylab='Log(anchovy eggs 10m2)',
-     pch=21, las=1, col='white',bg='gray40')
+setwd("~/Documents/R/Github/calcofi_spf/figures")
+png('spf_corr_comparison.png',height=8,width=8,units='in',res=300)
+par(mfrow=c(2,2),mar=c(5,4.5,2,1))
+plot((stock_assess$anch_2017),
+     (eggs_all_yr$anch_eggs_10m2+1),
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('Anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
+mtext('Core CalCOFI region')
 
-plot(log(stock_assess$sard_best,base=10),
-     log(eggs_all_yr$sard_eggs_10m2+1,base=10),
-     xlab='Log(sardine biomass)',
-     ylab='Log(sardine eggs 10m2)',
-     pch=21, las=1, col='white',bg='gray40')
+plot((stock_assess$anch_2017),
+     (eggs_sbc_yr$anch_eggs_10m2+1),
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('Anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
+mtext('Santa Barbara Channel')
 
-plot(log(stock_assess$sard_best,base=10),
-     log(eggs_sbc_yr$sard_eggs_10m2+1,base=10),
-     xlab='Log(sardine biomass)',
-     ylab='Log(sardine eggs 10m2)',
-     pch=21, las=1, col='white',bg='gray40')
+plot((stock_assess$sard_best),
+     (eggs_all_yr$sard_eggs_10m2+1),
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('Sardine eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
 
-
-
-### interpolating maps for 10 years with highest biomass versus 10 years with lowest
-anch_order <- order(stock_assess$anch_2017,decreasing = T)
-sard_order <- order(stock_assess$sard_best,decreasing = T)
-
-stock_assess$year[anch_order]
-stock_assess$year[sard_order]
+plot((stock_assess$sard_best),
+     (eggs_sbc_yr$sard_eggs_10m2+1),
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('Sardine eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
+dev.off()
