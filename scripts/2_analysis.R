@@ -18,18 +18,18 @@ names(stock_assess) <- c('year',
                          'anch_2017')
 
 ### correlation analysis
-
+method <- 'spearman'
 ### 1 - stock versus core CalCOFI region
 # anchovy
-anch_cor_w <- cor.test(stock_assess$anch_2017,eggs_all_yr$anch_eggs_10m2,method='spearman')
+anch_cor_w <- cor.test(stock_assess$anch_2017,eggs_all_yr$anch_eggs_10m2,method=method)
 # sardine
-sard_cor_w <- cor.test(stock_assess$sard_best,eggs_all_yr$sard_eggs_10m2,method='spearman')
+sard_cor_w <- cor.test(stock_assess$sard_best,eggs_all_yr$sard_eggs_10m2,method=method)
 
 ### 2- stock versus Santa Barbara Channel (SBC)
 # anchovy
-anch_cor_sbc <- cor.test(stock_assess$anch_2017,eggs_sbc_yr$anch_eggs_10m2,method='spearman')
+anch_cor_sbc <- cor.test(stock_assess$anch_2017,eggs_sbc_yr$anch_eggs_10m2,method=method)
 # sardine
-sard_cor_sbc <- cor.test(stock_assess$sard_best,eggs_sbc_yr$sard_eggs_10m2,method='spearman')
+sard_cor_sbc <- cor.test(stock_assess$sard_best,eggs_sbc_yr$sard_eggs_10m2,method=method)
 
 ### export results to table
 cor_table <- matrix(NA,4,2)
@@ -39,13 +39,13 @@ cor_table[3,] <- cbind(anch_cor_sbc$estimate,anch_cor_sbc$p.value)
 cor_table[4,] <- cbind(sard_cor_sbc$estimate,sard_cor_sbc$p.value)
 colnames(cor_table) <- c('rho','p-value')
 row.names(cor_table) <- c('anchovy whole','sardine whole','anchovy sbc','sardine sbc')
-setwd("~/Documents/R/Github/calcofi_spf/results")
-write.csv(cor_table,'correlation_results.csv')
+# setwd("~/Documents/R/Github/calcofi_spf/results")
+# write.csv(cor_table,'correlation_results.csv')
 
 ### combined plot
 
 setwd("~/Documents/R/Github/calcofi_spf/figures")
-png('spf_corr_comparison.png',height=8,width=8,units='in',res=300)
+png('fig1_corr_comparison.png',height=8,width=8,units='in',res=300)
 par(mfrow=c(2,2),mar=c(5,4.5,2,1))
 plot((stock_assess$anch_2017),
      (eggs_all_yr$anch_eggs_10m2+1),
@@ -77,3 +77,30 @@ plot((stock_assess$sard_best),
      pch=21, cex=1.5, col='white',bg='gray50',
      las=1, log='xy')
 dev.off()
+
+
+### ratio analysis
+### SBC to core region versus biomass
+
+### anchovy
+anch_ratio <- eggs_sbc_yr$anch_eggs_10m2/eggs_all_yr$anch_eggs_10m2
+### sardine
+sard_ratio <- eggs_sbc_yr$sard_eggs_10m2/eggs_all_yr$sard_eggs_10m2
+
+setwd("~/Documents/R/Github/calcofi_spf/figures")
+png('fig3_ratio.png',height=5,width=10,units='in',res=300)
+par(mfrow=c(1,2),mar=c(5,4.5,2,1))
+plot(stock_assess$anch_2017,anch_ratio,
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('SBC:core anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='x')
+plot(stock_assess$sard_best,sard_ratio,
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('SBC:core sardine eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='x')
+dev.off()
+
+cor.test(stock_assess$anch_2017,anch_ratio,method='spearman')
+cor.test(stock_assess$sard_best,sard_ratio,method='spearman')
