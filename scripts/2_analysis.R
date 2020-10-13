@@ -43,25 +43,25 @@ plot(log(stock_assess$anch_2017,base=10),
      log(eggs_all_yr$anch_eggs_10m2+1,base=10),
      xlab='Log(anchovy biomass)',
      ylab='Log(anchovy eggs 10m2)',
-     pch=16, las=1)
+     pch=21, las=1, col='white',bg='gray40')
 
 plot(log(stock_assess$anch_2017,base=10),
      log(eggs_sbc_yr$anch_eggs_10m2+1,base=10),
      xlab='Log(anchovy biomass)',
      ylab='Log(anchovy eggs 10m2)',
-     pch=16, las=1)
+     pch=21, las=1, col='white',bg='gray40')
 
 plot(log(stock_assess$sard_best,base=10),
      log(eggs_all_yr$sard_eggs_10m2+1,base=10),
      xlab='Log(sardine biomass)',
      ylab='Log(sardine eggs 10m2)',
-     pch=16, las=1)
+     pch=21, las=1, col='white',bg='gray40')
 
 plot(log(stock_assess$sard_best,base=10),
      log(eggs_sbc_yr$sard_eggs_10m2+1,base=10),
      xlab='Log(sardine biomass)',
      ylab='Log(sardine eggs 10m2)',
-     pch=16, las=1)
+     pch=21, las=1, col='white',bg='gray40')
 
 
 
