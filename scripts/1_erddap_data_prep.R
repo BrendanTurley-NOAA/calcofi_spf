@@ -91,7 +91,7 @@ sard_sbc_mean <- aggregate(sard_sbc$eggs_10m2,
 names(sard_sbc_mean) <- c('year','month','eggs_10m2')
 sard_sbc_mean <- merge(sard_sbc_mean,yr_mth,by=c('year','month'),all.y = T)
 
-### average over spawning seasons for respective species (anchovy: Jan-May, sardine: May-Sep)
+### average over spawning seasons for respective species (anchovy: Jan-May, sardine: Mar-Sep)
 anch_sbc_yrmean <- rep(NA,length(inx:2018))
 sard_sbc_yrmean <- rep(NA,length(inx:2018))
 for(i in sort(unique(yr_mth$year))){
