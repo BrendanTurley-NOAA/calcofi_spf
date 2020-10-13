@@ -8,7 +8,7 @@ world <- readOGR('ne_10m_admin_0_countries.shp')
 
 ### interpolating maps for 10 years with highest biomass versus 10 years with lowest
 
-### keep only standard stations
+### load standard CalCOFI station locations
 setwd("~/Documents/R/Github/calcofi_spf/data")
 calcofi_stations <- read.csv('CalCOFI75.csv')
 calcofi_stations$statline <- as.factor(paste(calcofi_stations$Line,calcofi_stations$Station,sep=' '))
