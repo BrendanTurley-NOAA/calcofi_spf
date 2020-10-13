@@ -62,11 +62,11 @@ head(sard_hilo,10)
 tail(sard_hilo,10)
 ### high biomass
 ind <- which(is.element(year(sard_eggs$time),head(sard_hilo,10)) & # subset for years of highest biomass
-               is.element(month(sard_eggs$time),1:5)) # subset for spawning season
+               is.element(month(sard_eggs$time),3:9)) # subset for spawning season
 sard_hi <- sard_eggs[ind,]
 ### low biomass
 ind <- which(is.element(year(sard_eggs$time),tail(sard_hilo,10)) & # subset for years of highest biomass
-               is.element(month(sard_eggs$time),1:5)) # subset for spawning season
+               is.element(month(sard_eggs$time),3:9)) # subset for spawning season
 sard_lo <- sard_eggs[ind,]
 
 
@@ -172,7 +172,7 @@ points(calcofi_stations$Longitude,calcofi_stations$Latitude,
        col='purple',cex=.5,lwd=1.2,pch=20)
 contour(sard_lo_interp,
         # levels=seq(0,.05,.05),
-        levels=seq(0,.001,.001),
+        levels=seq(-.001,.001,.001),
         add=T,col='gold',
         method='simple',labels='')
 plot(world,col='gray70',add=T)
