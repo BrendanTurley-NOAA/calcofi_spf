@@ -1,5 +1,3 @@
-library(akima)
-library(dplyr)
 library(lubridate)
 library(rerddap)
 
@@ -8,11 +6,12 @@ setwd("~/Documents/R/Github/calcofi_spf/data")
 ### connecting to ERDDAP to retrieve data
 calcofi_eggs <- info('erdCalCOFIeggcnt')
 
-###subset for anchovy/sardine, station and line, and pairovet only
-pairovet=T
-anch_eggs <- tabledap(calcofi_eggs,'calcofi_species_code=31','line>=76.7','line<=93.3','station<=120','net_type="PV"')
-sard_eggs <- tabledap(calcofi_eggs,'calcofi_species_code=19','line>=76.7','line<=93.3','station<=120','net_type="PV"')
+### subset for anchovy/sardine, station and line, and pairovet only
+# pairovet=T
+# anch_eggs <- tabledap(calcofi_eggs,'calcofi_species_code=31','line>=76.7','line<=93.3','station<=120','net_type="PV"')
+# sard_eggs <- tabledap(calcofi_eggs,'calcofi_species_code=19','line>=76.7','line<=93.3','station<=120','net_type="PV"')
 
+### bongo nets only
 pairovet=F
 anch_eggs_c1 <- tabledap(calcofi_eggs,'calcofi_species_code=31','line>=76.7','line<=93.3','station<=120','net_type="CB"')
 anch_eggs_cb <- tabledap(calcofi_eggs,'calcofi_species_code=31','line>=76.7','line<=93.3','station<=120','net_type="C1"')
@@ -46,7 +45,7 @@ ind <- is.element(sard_eggs$statline,calcofi_stations$statline)
 sard_eggs <- sard_eggs[ind,]
 
 
-# subset for Santa Barbara Channel (SBC)
+### -------------- subset for Santa Barbara Channel (SBC) --------------
 latbox_s <- 34.022787
 latbox_n <- 34.449671
 lonbox_e <- (-119.251099)
@@ -93,7 +92,57 @@ sard_sbc_yrmean <- rep(NA,length(inx:2018))
 for(i in sort(unique(yr_mth$year))){
   temp <- anch_sbc_mean[which(anch_sbc_mean$year==i),]
   anch_sbc_yrmean[i-(inx-1)] <- mean(temp$eggs_10m2[1:5],na.rm=T)
-  temp2 <- anch_sbc_mean[which(sard_sbc_mean$year==i),]
+  temp2 <- sard_sbc_mean[which(sard_sbc_mean$year==i),]
   sard_sbc_yrmean[i-(inx-1)] <- mean(temp2$eggs_10m2[3:9],na.rm=T)
 }
 
+eggs_sbc_yrmth <- data_frame(year=anch_sbc_mean$year,
+                         month=anch_sbc_mean$month,
+                         anch_eggs_10m2=anch_sbc_mean$eggs_10m2,
+                         sard_eggs_10m2=sard_sbc_mean$eggs_10m2)
+
+eggs_sbc_yr <- data.frame(year=sort(unique(yr_mth$year)),
+                      anch_eggs_10m2=anch_sbc_yrmean,
+                      sard_eggs_10m2=sard_sbc_yrmean)
+
+setwd("~/Documents/R/Github/calcofi_spf/data")
+write.csv(eggs_sbc_yrmth,'eggs_sbc_yrmth.csv',row.names = F)
+write.csv(eggs_sbc_yr,'eggs_sbc_yr.csv',row.names = F)
+
+### -------------- core CalCOFI region --------------
+
+### aggregate by year and month
+anch_all_mean <- aggregate(anch_eggs$eggs_10m2,
+                           by=list(year(anch_eggs$time),month(anch_eggs$time)),
+                           mean,na.rm=T)
+names(anch_all_mean) <- c('year','month','eggs_10m2')
+anch_all_mean <- merge(anch_all_mean,yr_mth,by=c('year','month'),all.y = T)
+
+sard_all_mean <- aggregate(sard_eggs$eggs_10m2,
+                           by=list(year(sard_eggs$time),month(sard_eggs$time)),
+                           mean,na.rm=T)
+names(sard_all_mean) <- c('year','month','eggs_10m2')
+sard_all_mean <- merge(sard_all_mean,yr_mth,by=c('year','month'),all.y = T)
+
+### average over spawning seasons for respective species (anchovy: Jan-May, sardine: May-Sep)
+anch_all_yrmean <- rep(NA,length(inx:2018))
+sard_all_yrmean <- rep(NA,length(inx:2018))
+for(i in sort(unique(yr_mth$year))){
+  temp <- anch_all_mean[which(anch_all_mean$year==i),]
+  anch_all_yrmean[i-(inx-1)] <- mean(temp$eggs_10m2[1:5],na.rm=T)
+  temp2 <- sard_all_mean[which(sard_all_mean$year==i),]
+  sard_all_yrmean[i-(inx-1)] <- mean(temp2$eggs_10m2[3:9],na.rm=T)
+}
+
+eggs_all_yrmth <- data_frame(year=anch_all_mean$year,
+                             month=anch_all_mean$month,
+                             anch_eggs_10m2=anch_all_mean$eggs_10m2,
+                             sard_eggs_10m2=sard_all_mean$eggs_10m2)
+
+eggs_all_yr <- data.frame(year=sort(unique(yr_mth$year)),
+                          anch_eggs_10m2=anch_all_yrmean,
+                          sard_eggs_10m2=sard_all_yrmean)
+
+setwd("~/Documents/R/Github/calcofi_spf/data")
+write.csv(eggs_all_yrmth,'eggs_all_yrmth.csv',row.names = F)
+write.csv(eggs_all_yr,'eggs_all_yr.csv',row.names = F)
