@@ -123,8 +123,13 @@ sard_lo_interp <- interp(sard_lo_mean$Longitude,sard_lo_mean$Latitude,log(sard_l
 
 ### make maps
 cols <- colorRampPalette(c('#172935','#154C53','#167168','#3B976F','#76BC6B','#BFDC63'))
-brks <- seq(0,3.5,.5)
+brks <- seq(0,4,.5)
 cols <- cols(length(brks)-1)
+
+cols2 <- colorRampPalette(c('#082418','#0A453F','#1F6670','#5485A5','#9F9FD4','#F7B4F3'))
+brks2 <- seq(0,3.5,.5)
+cols2 <- cols2(length(brks2)-1)
+
 
 setwd("~/Documents/R/Github/calcofi_spf/figures")
 png('fig2_spatial_comparison.png',height=7.5,width=10,units='in',res=300)
@@ -156,20 +161,23 @@ mtext('10 years with least biomass')
 
 plot(1,1,xlim=c(-125,-117),ylim=c(30,35),xlab='',ylab='',las=1,asp=1)
 image(sard_hi_interp,
-      breaks=brks,col=cols,
+      breaks=c(3.5,10),col=cols2[length(cols2)],
+      las=1,asp=1,add=T)
+image(sard_hi_interp,
+      breaks=brks2,col=cols2,
       las=1,asp=1,add=T)
 points(calcofi_stations$Longitude,calcofi_stations$Latitude,
-       col='purple',cex=.5,lwd=1.2,pch=20)
+       col='darkorange',cex=.5,lwd=1.2,pch=20)
 plot(world,col='gray70',add=T)
 mtext(expression(paste('Longitude (',degree,'W)')),1,2.5)
 mtext(expression(paste('Latitude (',degree,'N)')),2,2)
 
 plot(1,1,xlim=c(-125,-117),ylim=c(30,35),xlab='',ylab='',las=1,asp=1)
 image(sard_lo_interp,
-      breaks=brks,col=cols,
+      breaks=brks2,col=cols2,
       las=1,asp=1,add=T)
 points(calcofi_stations$Longitude,calcofi_stations$Latitude,
-       col='purple',cex=.5,lwd=1.2,pch=20)
+       col='darkorange',cex=.5,lwd=1.2,pch=20)
 contour(sard_lo_interp,
         # levels=seq(0,.05,.05),
         levels=seq(-.001,.001,.001),
@@ -183,11 +191,19 @@ dev.off()
 
 
 lth <- length(brks)-1
-png("fig2_colorbar.png", height = 5, width = 1.5, units = 'in', res=300)
+png("fig2_colorbar_anch.png", height = 5, width = 1.5, units = 'in', res=300)
 par(mar=c(1,1,1,5))
 image(1:2,1:length(brks),t(matrix(c(seq(1,lth),seq(1,lth)),lth,2)),col=cols,xaxt='n',yaxt='n',xlab='',ylab='')
-mtext(expression('Log'[10]*'(biomass [metric tons])'),4,line=3)
+mtext(expression('Log'[10]*'(eggs 10m'^-2),4,line=3)
 axis(4,seq(0,7,1)+1,labels=brks,las=1)
+dev.off()
+
+lth <- length(brks2)-1
+png("fig2_colorbar_sard.png", height = 5, width = 1.5, units = 'in', res=300)
+par(mar=c(1,1,1,5))
+image(1:2,1:length(brks2),t(matrix(c(seq(1,lth2),seq(1,lth2)),lth,2)),col=cols2,xaxt='n',yaxt='n',xlab='',ylab='')
+mtext(expression('Log'[10]*'(eggs 10m'^-2),4,line=3)
+axis(4,seq(0,7,1)+1,labels=brks2,las=1)
 dev.off()
 
 
