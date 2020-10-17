@@ -79,6 +79,64 @@ plot((stock_assess$sard_best),
 dev.off()
 
 
+### alternate plot with srdine assessment years different markers
+setwd("~/Documents/R/Github/calcofi_spf/figures")
+png('fig1_corr_comparison_1.png',height=8,width=8,units='in',res=300)
+par(mfrow=c(2,2),mar=c(5,4.5,2,1))
+plot((stock_assess$anch_2017),
+     (eggs_all_yr$anch_eggs_10m2+1),
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('Anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
+mtext('Core CalCOFI region')
+
+plot((stock_assess$anch_2017),
+     (eggs_sbc_yr$anch_eggs_10m2+1),
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('Anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='xy')
+mtext('Santa Barbara Channel')
+
+plot((stock_assess$sard_best),
+     (eggs_all_yr$sard_eggs_10m2+1),
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('Sardine eggs 10m'^-2),
+     col='white',
+     las=1, log='xy')
+points((stock_assess$sard_best[1:13]),
+       (eggs_all_yr$sard_eggs_10m2[1:13]+1),
+       pch=24, cex=1.25, col='gray20',bg='gray100')
+points((stock_assess$sard_best[31:54]),
+       (eggs_all_yr$sard_eggs_10m2[31:54]+1),
+       pch=23, cex=1.5, col='white',bg='gray50')
+points((stock_assess$sard_best[55:68]),
+       (eggs_all_yr$sard_eggs_10m2[55:68]+1),
+       pch=21, cex=1.5, col='white',bg='gray20')
+legend('topleft',c('1991','2009','2019'),pch=c(24,23,21),
+       col=c('gray20','white','white'),
+       pt.bg=c('gray100','gray50','gray20'),
+       bty='n',pt.cex=1.5)
+
+plot((stock_assess$sard_best),
+     (eggs_sbc_yr$sard_eggs_10m2+1),
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('Sardine eggs 10m'^-2),
+     col='white',
+     las=1, log='xy')
+points((stock_assess$sard_best[1:13]),
+       (eggs_sbc_yr$sard_eggs_10m2[1:13]+1),
+       pch=24, cex=1.25, col='gray20',bg='gray100')
+points((stock_assess$sard_best[31:54]),
+       (eggs_sbc_yr$sard_eggs_10m2[31:54]+1),
+       pch=23, cex=1.5, col='white',bg='gray50')
+points((stock_assess$sard_best[55:68]),
+       (eggs_sbc_yr$sard_eggs_10m2[55:68]+1),
+       pch=21, cex=1.5, col='white',bg='gray20')
+dev.off()
+
+
 ### ratio analysis
 ### SBC to core region versus biomass
 
@@ -102,5 +160,63 @@ plot(stock_assess$sard_best,sard_ratio,
      las=1, log='x')
 dev.off()
 
+
+setwd("~/Documents/R/Github/calcofi_spf/figures")
+png('fig3_ratio_1.png',height=5,width=10,units='in',res=300)
+par(mfrow=c(1,2),mar=c(5,4.5,2,1))
+plot(stock_assess$anch_2017,anch_ratio,
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('SBC:core anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1, log='x')
+plot(stock_assess$sard_best,sard_ratio,
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('SBC:core sardine eggs 10m'^-2),
+     col='white',
+     las=1, log='x')
+points(stock_assess$sard_best[1:13],sard_ratio[1:13],
+       pch=24, cex=1.35, col='gray20',bg='gray100')
+points(stock_assess$sard_best[31:54],sard_ratio[31:54],
+       pch=23, cex=1.5, col='white',bg='gray50')
+points(stock_assess$sard_best[55:68],sard_ratio[55:68],
+       pch=21, cex=1.5, col='white',bg='gray20')
+legend('topright',c('1991','2009','2019'),pch=c(24,23,21),
+       col=c('gray20','white','white'),
+       pt.bg=c('gray100','gray50','gray20'),
+       bty='n',pt.cex=1.5)
+dev.off()
+
+
+setwd("~/Documents/R/Github/calcofi_spf/figures")
+png('fig3_ratio_2.png',height=5,width=10,units='in',res=300)
+par(mfrow=c(1,2),mar=c(5,4.5,2,1))
+plot(stock_assess$anch_2017,anch_ratio,
+     xlab="Anchovy biomass (metric tons)",
+     ylab=expression('SBC:core anchovy eggs 10m'^-2),
+     pch=21, cex=1.5, col='white',bg='gray50',
+     las=1)
+plot(stock_assess$sard_best,sard_ratio,
+     xlab="Sardine biomass (metric tons)",
+     ylab=expression('SBC:core sardine eggs 10m'^-2),
+     col='white',
+     las=1)
+points(stock_assess$sard_best[1:13],sard_ratio[1:13],
+       pch=24, cex=1.35, col='gray20',bg='gray100')
+points(stock_assess$sard_best[31:54],sard_ratio[31:54],
+       pch=23, cex=1.5, col='white',bg='gray50')
+points(stock_assess$sard_best[55:68],sard_ratio[55:68],
+       pch=21, cex=1.5, col='white',bg='gray20')
+legend('topright',c('1991','2009','2019'),pch=c(24,23,21),
+       col=c('gray20','white','white'),
+       pt.bg=c('gray100','gray50','gray20'),
+       bty='n',pt.cex=1.5)
+dev.off()
+
 cor.test(stock_assess$anch_2017,anch_ratio,method='spearman')
 cor.test(stock_assess$sard_best,sard_ratio,method='spearman')
+
+summary(lm(anch_ratio~log10(stock_assess$anch_2017)))
+summary(lm(sard_ratio~log10(stock_assess$sard_best)))
+
+summary(lm(anch_ratio~(stock_assess$anch_2017)))
+summary(lm(sard_ratio~(stock_assess$sard_best)))
