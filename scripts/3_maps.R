@@ -21,6 +21,7 @@ stock_assess <- read.csv('assessment_output.csv',skip=5,nrows=68)
 names(stock_assess) <- c('year',
                          'sard_best',
                          'sard_2020',
+                         'sard_2019',
                          'sard_2009',
                          'sard_1991',
                          'anch_2017')
@@ -198,12 +199,14 @@ dev.off()
 ### alternate 1
 
 cols <- colorRampPalette(c('#172935','#154C53','#167168','#3B976F','#76BC6B','#BFDC63'))
-brks <- seq(0,4,.5)
+# brks <- seq(0,4,.5)
+brks <- seq(0,3.5,.01)
 cols <- cols(length(brks)-1)
 
-cols2 <- colorRampPalette(c('#082418','#0A453F','#1F6670','#5485A5','#9F9FD4','#F7B4F3'))
+# cols2 <- colorRampPalette(c('#082418','#0A453F','#1F6670','#5485A5','#9F9FD4','#F7B4F3'))
 cols2 <- colorRampPalette(c('#042B2A','#144837','#38653B','#698039','#A6973A','#EDA84E'))
-brks2 <- seq(0,2,.1)
+# brks2 <- seq(0,2,.1)
+brks2 <- seq(0,2.5,.005)
 cols2 <- cols2(length(brks2)-1)
 
 
@@ -271,7 +274,8 @@ png("fig2_colorbar_anch_1.png", height = 5, width = 1.5, units = 'in', res=300)
 par(mar=c(1,1,1,5))
 image(1:2,1:length(brks),t(matrix(c(seq(1,lth),seq(1,lth)),lth,2)),col=cols,xaxt='n',yaxt='n',xlab='',ylab='')
 mtext(expression('Log'[10]*'(anchovy eggs 10m'^-2*')'),4,line=3)
-axis(4,seq(0,lth,1)+1,labels=brks,las=1)
+# axis(4,seq(0,lth,1)+1,labels=brks,las=1)
+axis(4,seq(0,lth,50)+1,labels=c(brks[seq(1,lth,50)],brks[length(brks)]),las=1)
 dev.off()
 
 lth2 <- length(brks2)-1
@@ -279,7 +283,8 @@ png("fig2_colorbar_sard_1.png", height = 5, width = 1.5, units = 'in', res=300)
 par(mar=c(1,1,1,5))
 image(1:2,1:length(brks2),t(matrix(c(seq(1,lth2),seq(1,lth2)),lth2,2)),col=cols2,xaxt='n',yaxt='n',xlab='',ylab='')
 mtext(expression('Log'[10]*'(sardine eggs 10m'^-2*')'),4,line=3)
-axis(4,seq(0,(lth2),1)+1,labels=brks2,las=1)
+# axis(4,seq(0,(lth2),1)+1,labels=brks2,las=1)
+axis(4,seq(0,lth2,100)+1,labels=c(brks2[seq(1,lth2,100)],brks2[length(brks2)]),las=1)
 dev.off()
 
 

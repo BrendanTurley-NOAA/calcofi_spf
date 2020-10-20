@@ -13,6 +13,7 @@ stock_assess <- read.csv('assessment_output.csv',skip=5,nrows=68)
 names(stock_assess) <- c('year',
                          'sard_best',
                          'sard_2020',
+                         'sard_2019',
                          'sard_2009',
                          'sard_1991',
                          'anch_2017')
@@ -39,8 +40,8 @@ cor_table[3,] <- cbind(anch_cor_sbc$estimate,anch_cor_sbc$p.value)
 cor_table[4,] <- cbind(sard_cor_sbc$estimate,sard_cor_sbc$p.value)
 colnames(cor_table) <- c('rho','p-value')
 row.names(cor_table) <- c('anchovy whole','sardine whole','anchovy sbc','sardine sbc')
-# setwd("~/Documents/R/Github/calcofi_spf/results")
-# write.csv(cor_table,'correlation_results.csv')
+setwd("~/Documents/R/Github/calcofi_spf/tables")
+write.csv(cor_table,'correlation_results.csv')
 
 ### combined plot
 
@@ -79,7 +80,7 @@ plot((stock_assess$sard_best),
 dev.off()
 
 
-### alternate plot with srdine assessment years different markers
+### alternate plot with sardine assessment years different markers
 setwd("~/Documents/R/Github/calcofi_spf/figures")
 png('fig1_corr_comparison_1.png',height=8,width=8,units='in',res=300)
 par(mfrow=c(2,2),mar=c(5,4.5,2,1))
@@ -114,7 +115,7 @@ points((stock_assess$sard_best[31:54]),
 points((stock_assess$sard_best[55:68]),
        (eggs_all_yr$sard_eggs_10m2[55:68]+1),
        pch=21, cex=1.5, col='white',bg='gray20')
-legend('topleft',c('1991','2009','2019'),pch=c(24,23,21),
+legend('topleft',c('1991','2009','2020'),pch=c(24,23,21),
        col=c('gray20','white','white'),
        pt.bg=c('gray100','gray50','gray20'),
        bty='n',pt.cex=1.5)
@@ -180,7 +181,7 @@ points(stock_assess$sard_best[31:54],sard_ratio[31:54],
        pch=23, cex=1.5, col='white',bg='gray50')
 points(stock_assess$sard_best[55:68],sard_ratio[55:68],
        pch=21, cex=1.5, col='white',bg='gray20')
-legend('topright',c('1991','2009','2019'),pch=c(24,23,21),
+legend('topright',c('1991','2009','2020'),pch=c(24,23,21),
        col=c('gray20','white','white'),
        pt.bg=c('gray100','gray50','gray20'),
        bty='n',pt.cex=1.5)
@@ -206,7 +207,7 @@ points(stock_assess$sard_best[31:54],sard_ratio[31:54],
        pch=23, cex=1.5, col='white',bg='gray50')
 points(stock_assess$sard_best[55:68],sard_ratio[55:68],
        pch=21, cex=1.5, col='white',bg='gray20')
-legend('topright',c('1991','2009','2019'),pch=c(24,23,21),
+legend('topright',c('1991','2009','2020'),pch=c(24,23,21),
        col=c('gray20','white','white'),
        pt.bg=c('gray100','gray50','gray20'),
        bty='n',pt.cex=1.5)
